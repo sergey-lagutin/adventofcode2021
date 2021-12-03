@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 import scala.language.implicitConversions
 
 object Day03 extends App {
-  val diagnostics = getStrings("input03_1.txt")
+  val diagnostics = getStrings("input03.txt")
 
   private def inverse(str: Seq[Char]) = str.map {
     case '0' => '1'

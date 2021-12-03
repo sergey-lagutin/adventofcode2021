@@ -3,7 +3,7 @@ package com.adventofcode
 import com.adventofcode.utils.FileUtils.getInts
 
 object Day01 extends App {
-  val measurements = getInts("input01_1.txt")
+  val measurements = getInts("input01.txt")
 
   val increases = measurements
     .sliding(2, 1)

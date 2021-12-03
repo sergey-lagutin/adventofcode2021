@@ -6,7 +6,7 @@ object Day02 extends App {
 
   case class Command(dir: String, value: Int)
 
-  val commands = getLines("input02_1.txt") { line =>
+  val commands = getLines("input02.txt") { line =>
     val Array(dir, value) = line.split(" ")
     Command(dir, value.toInt)
   }
