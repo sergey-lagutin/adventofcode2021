@@ -1,9 +1,9 @@
 package com.adventofcode
 
-import com.adventofcode.utils.FileUtils.getLines
+import com.adventofcode.utils.FileUtils.getInts
 
 object Day01 extends App {
-  val measurements = getLines("input01_1.txt")(_.toInt)
+  val measurements = getInts("input01_1.txt")
 
   val increases = measurements
     .sliding(2, 1)

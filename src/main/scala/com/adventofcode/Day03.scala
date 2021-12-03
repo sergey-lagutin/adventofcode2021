@@ -1,13 +1,13 @@
 package com.adventofcode
 
 import com.adventofcode.utils.CollectionUtils.{FrequencyOps, SeqOps}
-import com.adventofcode.utils.FileUtils.getLines
+import com.adventofcode.utils.FileUtils.getStrings
 
 import scala.annotation.tailrec
 import scala.language.implicitConversions
 
 object Day03 extends App {
-  val diagnostics = getLines("input03_1.txt")(s => s)
+  val diagnostics = getStrings("input03_1.txt")
 
   private def inverse(str: Seq[Char]) = str.map {
     case '0' => '1'
