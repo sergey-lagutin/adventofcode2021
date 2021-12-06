@@ -34,5 +34,10 @@ object CollectionUtils {
         else None
       }
     }
+
+    def withBigInts: Map[T, BigInt] =
+      map.map { case (t, count) =>
+        t -> BigInt(count)
+      }
   }
 }
