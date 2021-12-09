@@ -13,6 +13,13 @@ object CollectionUtils {
     def mostFrequent: T =
       map.maxBy(_._2)._1
 
+    def mostFrequentN(n: Int): Map[T, Int] = {
+      map.toList
+        .sortBy(_._2)(Ordering[Int].reverse)
+        .take(n)
+        .toMap
+    }
+
     def leastFrequent: T =
       map.minBy(_._2)._1
 
