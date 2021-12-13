@@ -6,22 +6,8 @@ import com.adventofcode.utils.FileUtils.getLines
 import scala.annotation.tailrec
 
 object Day12 extends App {
-  sealed trait Cave {
-    def code: String
-    def isSmall: Boolean
-  }
-
-  case class BigCave(code: String) extends Cave {
-    override def isSmall: Boolean = false
-  }
-
-  case class SmallCave(code: String) extends Cave {
-    override def isSmall: Boolean = true
-  }
-
-  object Cave {
-    def apply(code: String): Cave =
-      if (code.toLowerCase == code) SmallCave(code) else BigCave(code)
+  case class Cave(code: String) {
+    lazy val isSmall: Boolean = code.toLowerCase == code
   }
 
   case class Edge(from: Cave, to: Cave)
@@ -52,13 +38,13 @@ object Day12 extends App {
   }
 
   private def visitOneSmallTwiceAndRestOnlyOnce(start: Cave)(path: Path): List[Cave] = {
-    val visitedSmallCavesFrequency = path.filter(_.isSmall).frequency
-    val visitedSmallCaves = path.filter(_.isSmall)
-    val mostVisited = visitedSmallCavesFrequency(visitedSmallCavesFrequency.mostFrequent)
+    lazy val visitedSmallCaves = path.filter(_.isSmall)
+    lazy val visitedSmallCavesFrequency = path.filter(_.isSmall).frequency
+    lazy val mostVisited = visitedSmallCavesFrequency(visitedSmallCavesFrequency.mostFrequent)
     val head = path.head
     edgeMap(head.code)
       .filter(_ != start)
-      .filter(cave => !cave.isSmall || mostVisited == 1 || !visitedSmallCaves.contains(cave))
+      .filter(cave => !cave.isSmall || !visitedSmallCaves.contains(cave) || mostVisited == 1)
   }
 
   private def findPaths(start: Cave, end: Cave, candidateCaves: Path => List[Cave]): List[Path] = {
