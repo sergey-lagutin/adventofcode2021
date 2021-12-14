@@ -3,25 +3,31 @@ package com.adventofcode.utils
 object CollectionUtils {
   implicit class SeqOps[T](seq: Seq[T]) {
 
-    def frequency: Map[T, Int] =
-      seq.foldLeft(Map.empty[T, Int]) { case (res, e) =>
-        res + (e -> (res.getOrElse(e, 0) + 1))
+    def frequency: Map[T, BigInt] =
+      seq.foldLeft(Map.empty[T, BigInt]) { case (res, e) =>
+        res + (e -> (res.getOrElse(e, 0: BigInt) + 1))
       }
   }
 
-  implicit class FrequencyOps[T](map: Map[T, Int]) {
+  implicit class FrequencyOps[T](map: Map[T, BigInt]) {
     def mostFrequent: T =
-      map.maxBy(_._2)._1
+      mostFrequentPair._1
 
-    def mostFrequentN(n: Int): Map[T, Int] = {
+    def mostFrequentPair: (T, BigInt) =
+      map.maxBy(_._2)
+
+    def mostFrequentN(n: Int): Map[T, BigInt] = {
       map.toList
-        .sortBy(_._2)(Ordering[Int].reverse)
+        .sortBy(_._2)(Ordering.BigInt.reverse)
         .take(n)
         .toMap
     }
 
+    def leastFrequentPair: (T, BigInt) =
+      map.minBy(_._2)
+
     def leastFrequent: T =
-      map.minBy(_._2)._1
+      leastFrequentPair._1
 
     def mostFrequentOpt: Option[T] =
       findUniqueByCount(_.maxByOption(_._2))
@@ -29,7 +35,7 @@ object CollectionUtils {
     def leastFrequentOpt: Option[T] =
       findUniqueByCount(_.minByOption(_._2))
 
-    private def findUniqueByCount(predicate: Map[T, Int] => Option[(T, Int)]): Option[T] = {
+    private def findUniqueByCount(predicate: Map[T, BigInt] => Option[(T, BigInt)]): Option[T] = {
       val candidates = for {
         (_, n) <- predicate(map)
       } yield map.collect {
@@ -41,10 +47,14 @@ object CollectionUtils {
         else None
       }
     }
+  }
 
-    def withBigInts: Map[T, BigInt] =
-      map.map { case (t, count) =>
-        t -> BigInt(count)
-      }
+  implicit class FrequencySeqOps[T](list: Seq[(T, BigInt)]) {
+    def compactFrequency: Map[T, BigInt] =
+      list
+        .groupBy(_._1)
+        .view
+        .mapValues(_.map(_._2).sum)
+        .toMap
   }
 }

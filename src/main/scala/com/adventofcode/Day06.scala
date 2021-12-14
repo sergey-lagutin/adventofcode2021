@@ -31,10 +31,10 @@ object Day06 extends App {
 
   val fishes = getStrings("input06.txt").flatMap(_.split(",").toList).map(_.toInt)
 
-  val fishFrequency = fishes.frequency.withBigInts
+  val fishFrequency = fishes.frequency
   val result1: Map[DaysLeft, Count] = live(fishFrequency, 80)
   println(result1.values.sum)
 
-  val result2: Map[DaysLeft, Count] = live(fishes.frequency.withBigInts, 256)
+  val result2: Map[DaysLeft, Count] = live(fishes.frequency, 256)
   println(result2.values.sum)
 }
